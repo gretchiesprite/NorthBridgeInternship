@@ -1,5 +1,6 @@
-from urllib.parse import urlparse
+from urlparse import urlparse
 import hashlib
+
 
 # return parsed URL
 def parseURL(url):
