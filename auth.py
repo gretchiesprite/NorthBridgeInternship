@@ -20,9 +20,13 @@ def getParams(url):
 
 # returns the value of hash
 def getHash(params):
-	return params['hash']
+	if 'hash' in params:
+		return params['hash']
+	else:
+		return None
 
-url = 'http://northbridgetech.org/nexus/api/getUserGroups?userid=683&userloc=123&hash=62717d90f927f12919bac2949dea68e8d2e21a1e005c9435d9a339d71854bdd9'
+'''url = 'http://northbridgetech.org/nexus/api/getUserGroups?userid=683&userloc=123&hash=62717d90f927f12919bac2949dea68e8d2e21a1e005c9435d9a339d71854bdd9'''
+url = 'http://northbridgetech.org/nexus/api/getUserGroups?userid=683&userloc=123'
 location = url.find('hash')
 urlLessHash = url[0:location-1]
 
@@ -37,7 +41,9 @@ parsedURL = parseURL(url)
 params = getParams(parsedURL)
 hashed = getHash(params)
 
-if(hashed == hexDig):
+if (hashed == None):
+	print('Hash not found. URL is invalid')
+elif(hashed == hexDig):
 	print('Success. Hash is valid')
 else:
 	print('Error. Hash is invalid')
