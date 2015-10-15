@@ -1,13 +1,9 @@
 from urlparse import urlparse
 import hashlib
-
-
-# return parsed URL
-def parseURL(url):
-	return urlparse(url)
+import psycopg2test
 
 # returns a dictionary of the parameters
-def getParams(url):
+def get_params(url):
 	paramDict = {}
 	params = url.query
 	params = params.rsplit('&')
@@ -19,32 +15,39 @@ def getParams(url):
 	return paramDict
 
 # returns the value of hash
-def getHash(params):
+def get_hash(params):
 	if 'hash' in params:
 		return params['hash']
 	else:
 		return None
 
-'''url = 'http://northbridgetech.org/nexus/api/getUserGroups?userid=683&userloc=123&hash=62717d90f927f12919bac2949dea68e8d2e21a1e005c9435d9a339d71854bdd9'''
-url = 'http://northbridgetech.org/nexus/api/getUserGroups?userid=683&userloc=123'
-location = url.find('hash')
-urlLessHash = url[0:location-1]
+def main():
+	url = 'http://northbridgetech.org/nexus/api/getUsers?userid=127&username=kdf&hash=1730f055ae25a08d71f52772f1b9517aa642b67706d02af10a953d2b6e8509cb'
+	location = url.find('hash')
+	urlLessHash = url[0:location-1]
 
-secretTokenFile = open('secretToken.txt', 'r')
-secretToken = secretTokenFile.read()
-urlAndToken = urlLessHash + '&' + secretToken
+	secretTokenFile = open('secretToken.txt', 'r')
+	secretToken = secretTokenFile.read()
+	urlAndToken = urlLessHash + '&' + secretToken
 
-hashObject = hashlib.sha256(urlAndToken.encode('utf-8'))
-hexDig = hashObject.hexdigest()
+	hashObject = hashlib.sha256(urlAndToken.encode('utf-8'))
+	hexDig = hashObject.hexdigest()
 
-parsedURL = parseURL(url)
-params = getParams(parsedURL)
-hashed = getHash(params)
+	parsedURL = urlparse(url)
+	params = get_params(parsedURL)
+	hashed = get_hash(params)
 
-if (hashed == None):
-	print('Hash not found. URL is invalid')
-elif(hashed == hexDig):
-	print('Success. Hash is valid')
-else:
-	print('Error. Hash is invalid')
+	function = parsedURL.path[11:]
+
+	if (hashed == None):
+		print('Hash not found. URL is invalid.')
+	elif(hashed == hexDig):
+		print('Success. Hash is valid.')
+		psycopg2test.get_user_info(function, params)
+	else:
+		print('Error. Hash is invalid.')
+
+if __name__ == "__main__":
+	main()
+
 
