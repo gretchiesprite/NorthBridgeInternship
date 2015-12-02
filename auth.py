@@ -1,6 +1,6 @@
 from urlparse import urlparse
 import hashlib
-import psycopg2test
+import requestInterface
 
 # returns a dictionary of the parameters
 def get_params(url):
@@ -43,7 +43,7 @@ def main():
 		print('Hash not found. URL is invalid.')
 	elif(hashed == hexDig):
 		print('Success. Hash is valid.')
-		psycopg2test.get_user_info(function, params)
+		requestInterface.get_request(function, params)
 	else:
 		print('Error. Hash is invalid.')
 
