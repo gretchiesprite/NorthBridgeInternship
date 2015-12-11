@@ -22,7 +22,7 @@ def get_hash(params):
 		return None
 
 def main():
-	url = 'http://northbridgetech.org/nexus/api/getUsers?userid=127&username=kdf&hash=1730f055ae25a08d71f52772f1b9517aa642b67706d02af10a953d2b6e8509cb'
+	url = 'http://northbridgetech.org/nexus/api/updateDemoNowEvent?hash=2adf840ab24ed04ae51ff28b71b46fea53ee85ef318b35ec85ac022a90675e2d'
 	location = url.find('hash')
 	urlLessHash = url[0:location-1]
 
@@ -32,6 +32,7 @@ def main():
 
 	hashObject = hashlib.sha256(urlAndToken.encode('utf-8'))
 	hexDig = hashObject.hexdigest()
+	print hexDig
 
 	parsedURL = urlparse(url)
 	params = get_params(parsedURL)

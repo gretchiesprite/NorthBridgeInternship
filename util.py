@@ -1,5 +1,6 @@
 import string, time, math, random
 import hashlib
+import config_env
 
 def newUuid(): 
     s = hashlib.md5(uniqid(random.randint(0, 2147483647), True)).hexdigest().lower() 
@@ -20,7 +21,7 @@ def uniqid(prefix='', more_entropy=False):
     return uniqid
 
 def getDemoNowEvent():
-	return DEMO_EVENT_NOW
+	return config_env.DEMO_EVENT_NOW
 
 def getDemoFutureEvent():
-	return DEMO_EVENT_FUTURE
+	return config_env.DEMO_EVENT_FUTURE
